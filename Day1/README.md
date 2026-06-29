@@ -190,6 +190,7 @@ In your home directory, create a folder something like custom-docker-image
 ```
 cd ~/
 mkdir -p custom-docker-image
+cd custom-docker-image
 touch Dockerfile
 ```
 
