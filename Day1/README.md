@@ -41,4 +41,19 @@
 - application virtualization technology
 - it is light weight, because each container represents a single application not an Operating System
 - all the containers that runs on top a OS shares the Hardware resources available on the underlying OS
+- containers will never be able to replace an Operating System or Virtualization
+- in fact, in real-world scenarios, virtualization and containerization are used in combination
+- container runtime
+  - is a low-level software that manages container images and containers
+  - it is not user-friendly, hence end-user like us never use container runtime directly
+  - examples
+    - runC
+    - cRun
+    - CRI-O
+- container engine
+  - is a high-level software that manages container images and containers
+  - it is very user-friendly, but they depend on container runtimes internally to manage images and containers
+  - examples
+    - docker
+    - podman
 </pre>
