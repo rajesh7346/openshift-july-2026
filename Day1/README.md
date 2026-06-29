@@ -261,3 +261,12 @@ In order to delete a running container forcibly
 docker rm -f c1-jegan
 docker ps -a
 ```
+
+## Lab - Rename a container
+```
+docker run -dit ubuntu:latest /bin/bash
+docker ps a
+docker rename zealous_montalcini c2-jegan
+docker ps
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/376e7c47-8709-4ca7-a1a8-697cce371b0e" />
