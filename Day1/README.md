@@ -65,9 +65,10 @@
 </pre>
 
 ## Info - Hypervisor High-Level Architecture
+![hypervisor](HypervisorHighLevelArchitecture.png)
 
 ## Info - Docker High-Level Architecture
-
+![docker](DockerHighLevelArchitecture.png)
 
 ## Info - Docker image
 <pre>
@@ -78,6 +79,7 @@
 - docker images are conservatively built, which means it only contains bare minimum tools required to run a specific appliction
 - every docker images gets a unique name and unique id ( 256-bit HASH )
 </pre>
+![docker](DockerLayers.png)
 
 ## Info - Docker Container
 <pre>
