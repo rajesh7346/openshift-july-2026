@@ -300,6 +300,7 @@ docker exec -it c1-jegan hostname -i
 
 
 ## Lab - Setup a Load balancer using containers
+![lb](PortForwarding.png)
 
 Let's create 3 web server containers using ngnix:latest image from Docker Hub website
 ```
