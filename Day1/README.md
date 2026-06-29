@@ -231,6 +231,14 @@ docker ps
 docker ps | grep c1-jegan
 docker stop c1-jegan
 docker ps | grep c1-jegan
+docker ps -a | grep c1-jegan
+```
+
+## Lab - Start a exited container
+```
+docker ps -a | grep c1-jegan
+docker start c1-jegan
+docker ps | grep c1-jegan
 ```
 
 
