@@ -1,4 +1,5 @@
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7f151ed9-d142-401d-9a9d-37989afab88d" />
+# Day 1
+
 ## Info - Hypervisor Overview
 <pre>
 - nothing but virtualization 
