@@ -248,4 +248,16 @@ docker restart c1-jegan
 docker ps | grep c1-jegan
 ```
 
+## Lab - Deleting a running container
+In order to delete a running container gracefully, you must stop it first
+```
+docker stop c1-jegan
+docker rm c1-jegan
+docker ps -a
+```
 
+In order to delete a running container forcibly
+```
+docker rm -f c1-jegan
+docker ps -a
+```
