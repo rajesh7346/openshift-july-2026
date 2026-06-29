@@ -1,4 +1,4 @@
-
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7f151ed9-d142-401d-9a9d-37989afab88d" />
 ## Info - Hypervisor Overview
 <pre>
 - nothing but virtualization 
@@ -343,3 +343,52 @@ cat nginx.conf
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/67db13f7-5bf3-490d-ad7a-f3144c929fc9" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/985c6a4b-baa3-479c-840e-b34e031c1a02" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f7158615-baca-4f5c-84ee-ebb3cb4efe39" />
+
+You need find the IP addresses of your nginx web server containers and update the nginx.conf file as shown below
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9a1de32a-3915-4750-aa49-4d85cccba04a" />
+
+We need to copy this updated nginx.conf file from our local machine to the lb-jegan container
+```
+docker cp nginx.conf lb-jegan:/etc/nginx/nginx.conf
+```
+
+We need to restart the lb-jegan container to apply the config changes
+```
+docker restart lb-jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/432a7fda-4a3e-46ce-aa2b-7deeb7177fa4" />
+
+Make sure the lb-jegan container is running after our config changes
+```
+docker ps
+```
+
+Let's customize the web page in nginx1-jegan, nginx2-jegan and nginx3-jegan web server containers
+```
+echo "<h1>Web Server 1</h1>" > index.html
+docker cp index.html nginx1-jegan:/usr/share/nginx/html/index.html
+
+echo "<h1>Web Server 2</h1>" > index.html
+docker cp index.html nginx2-jegan:/usr/share/nginx/html/index.html
+
+echo "<h1>Web Server 3</h1>" > index.html
+docker cp index.html nginx3-jegan:/usr/share/nginx/html/index.html
+
+curl http://172.17.0.2:80
+curl http://172.17.0.3:80
+curl http://172.17.0.4:80
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4e1bbad6-a03d-4a83-a473-83a17a4e3d1a" />
+
+
+Let's verify if the lb-jegan container is working as configured( as a load balancer ) from firefox web browser on your lab machine
+```
+http://localhost:8080
+http://localhost:8080
+http://localhost:8080
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ba30e297-584c-4c53-9d48-5365bc67871e" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/139d4de4-4dae-4d8e-b3d1-00916d679a69" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ebc44367-2905-4d4a-bc89-3303a80fc9e3" />
+
