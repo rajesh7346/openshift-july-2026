@@ -335,6 +335,13 @@ Now, let's create the load balancer container with port-forward( to make it acce
 ```
 docker run -d --name lb-jegan --hostname lb-jegan -p 8080:80 nginx:latest
 ```
+In case you wish docker to identify an available port on your lab machine and forward to that port
+```
+docker rm -f lb-jegan
+docker run -d --name lb-jegan --hostname lb-jegan -P  nginx:latest
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d711f979-b7b6-4c26-9bd8-ddb56485fb44" />
+
 
 We need to copy the nginx.conf file from the lb-jegan container to configure it work like a load balancer
 ```
