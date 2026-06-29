@@ -89,3 +89,16 @@
 - each container uses about 7 namespaces
 - each container gets one or more IP addresses ( generally Private IP )
 </pre>
+
+## Info - Docker Registry
+<pre>
+- is a collection of multiple docker images
+- there are 3 types
+  1. Local Docker Registry
+     - is a folder created and maintained by Docker server on the same machine where it runs
+     - for example, in linux distros, local docker registry is maintained under directory /var/lib/docker
+  2. Remote docker registry
+     - is a web site ( hub.docker.com ) maintained by Docker Inc and opensource community
+  3. Private Docker registry
+     - can be setup using JFrog Artifactory or Sonatype Nexus
+</pre>
