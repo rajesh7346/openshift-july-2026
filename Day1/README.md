@@ -182,3 +182,46 @@ docker ps -a | grep jegan
 ```
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/068a94a2-0d61-4f58-929c-ad85c9864bb9" />
+
+
+## Lab - Create a custom docker image
+
+In your home directory, create a folder something like custom-docker-image
+```
+cd ~/
+mkdir -p custom-docker-image
+touch Dockerfile
+```
+
+Add the below content to your Dockerfile
+<pre>
+FROM ubuntu:26.04
+
+RUN apt update && apt install -y net-tools iputils-ping
+RUN apt update && apt install -y default-jdk maven  
+</pre>
+
+Build your custom docker image
+```
+cd ~/custom-docker-image
+docker build -t ubuntu-jegan:1.0 .
+docker images | grep jegan
+```
+
+Create a container using your custom docker image
+```
+docker run -dit --name c1-jegan --hostname c1-jegan ubuntu-jegan:1.0 /bin/bash
+docker exec -it c1-jegan /bin/bash
+hostname
+hostname -i
+ping 8.8.8.8
+ifconfig
+ls
+exit
+```
+
+List and see the container should still run because we created this container in background
+```
+docker ps
+```
+
