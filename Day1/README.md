@@ -297,3 +297,49 @@ docker exec -it c1-jegan hostname -i
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9bb4c003-09fa-462c-991f-f8a646ede2fd" />
 
+
+## Lab - Setup a Load balancer using containers
+
+Let's create 3 web server containers using ngnix:latest image from Docker Hub website
+```
+docker run -d --name nginx1-jegan --hostname nginx1-jegan nginx:latest
+docker run -d --name nginx2-jegan --hostname nginx2-jegan nginx:latest
+docker run -d --name nginx3-jegan --hostname nginx3-jegan nginx:latest
+```
+
+List all running containers
+```
+docker ps
+```
+
+Find the IP addresses of the 3 webserver containers
+```
+docker inspect nginx1-jegan | grep IPA
+docker inspect nginx2-jegan | grep IPA
+docker inspect nginx3-jegan | grep IPA
+```
+
+See if you are able to access the web pages from those web server containers
+```
+curl http://172.17.0.2:80
+curl http://172.17.0.3:80
+curl http://172.17.0.4:80
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d77fe7f3-7988-47c4-90f1-722f7c5e83de" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/cbed13a0-4a3d-4b96-9d50-4b48511211c9" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/87efbbca-a7da-4abe-88f9-c5a43458779c" />
+
+Now, let's create the load balancer container with port-forward( to make it accessible outside the system where the lb container is running)
+```
+docker run -d --name lb-jegan --hostname lb-jegan -p 8080:80 nginx:latest
+```
+
+We need to copy the nginx.conf file from the lb-jegan container to configure it work like a load balancer
+```
+docker cp lb-jegan:/etc/nginx/nginx.conf .
+cat nginx.conf
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/67db13f7-5bf3-490d-ad7a-f3144c929fc9" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/985c6a4b-baa3-479c-840e-b34e031c1a02" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f7158615-baca-4f5c-84ee-ebb3cb4efe39" />
