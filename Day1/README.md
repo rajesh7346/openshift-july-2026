@@ -163,13 +163,23 @@ docker images | grep hello
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/cacaa967-c82b-4967-8726-7c816c99a112" />
 
 ## Lab - Creating a container in the interactive(foreground) mode
+From terminal 1
 ```
 docker run -it --name ubuntu1-jegan --hostname ubuntu1-jegan ubuntu:latest /bin/bash
+hostname
+hostname -i
+ls
+exit
 ```
 
-List all running containers
+List all running containers from second terminal
 ```
 docker ps | grep jegan
+```
+
+List all running containers you created
+```
+docker ps -a | grep jegan
 ```
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/068a94a2-0d61-4f58-929c-ad85c9864bb9" />
