@@ -136,4 +136,5 @@ docker --version
 docker info
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/612f7d88-7074-44aa-977e-a96a44a80a64" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c6ace828-9e5a-49d5-a10a-8a84f70a068c" />
 
