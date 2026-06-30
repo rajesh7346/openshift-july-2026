@@ -298,4 +298,12 @@ oc get rs/nginx-dbfb56c96 -o yaml
 oc get pod/nginx-dbfb56c96-jfx2m -o yaml
 ```
 
+## Lab - Scale up/down your deployments
+```
+oc project jegan-project
+# Scale up
+oc scale deploy/nginx --replicas=5
 
+# Scale down
+oc scale deploy/nginx --replicas=3
+```
