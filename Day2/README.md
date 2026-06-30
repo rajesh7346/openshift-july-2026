@@ -107,3 +107,21 @@
       application won't be able to modify those restricted folders
     - Ports 0-1024 are reserved for Openshift's internal use
 </pre>
+
+## Lab - Login to openshift from command-line
+```
+cat ~/openshift.txt
+oc login --username=kubeadmin --password=VVnz6-ezZ9W-RVbw4-NPK3R https://api.ocp4.palmeto.org:6443 --insecure-skip-tls-verify
+```
+
+## Lab - Listing Nodes in Red Hat Openshift
+```
+oc version
+kubectl version
+
+oc get nodes
+kubectl get nodes
+
+oc get nodes -o wide
+kubectl get nodes -o wide
+```
