@@ -323,6 +323,19 @@ curl http://localhost:9090
 # From Terminal 2, curl will no more work
 ```
 
+## Lab - Getting inside a node shell
+```
+oc get nodes
+oc debug node/master01.ocp4.palmeto.org
+chroot /host
+podman version
+crictl version
+crictl images
+crictl ps
+exit
+exit
+```
+
 ## Lab - Getting inside a pod shell
 ```
 oc project jegan-project
