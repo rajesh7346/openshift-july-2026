@@ -292,6 +292,10 @@ oc edit deploy/nginx
 oc get pods
 
 oc get deploy/nginx -o yaml
+oc get deploy/nginx -o json
+
+oc get rs/nginx-dbfb56c96 -o yaml
+oc get pod/nginx-dbfb56c96-jfx2m -o yaml
 ```
 
 
