@@ -323,7 +323,7 @@ curl http://localhost:9090
 # From Terminal 2, curl will no more work
 ```
 
-## Lab - Getting inside a node shell
+## Lab - Getting inside a node shell ( only a cluster/kube admin do can do this at work place)
 ```
 oc get nodes
 oc debug node/master01.ocp4.palmeto.org
@@ -336,7 +336,7 @@ exit
 exit
 ```
 
-## Lab - Getting inside a pod shell
+## Lab - Getting inside a pod shell (this doesn't require admin access)
 ```
 oc project jegan-project
 oc get pods
