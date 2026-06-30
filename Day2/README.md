@@ -97,7 +97,10 @@
   - supports either Red Hat Enterprise Linux(RHEL) or RHCOS in Worker Node
   - Red Hat Openshift generally recommends to install RHCOS in all nodes
   - supports only CRI-O Container Runtime
-  - RHCOS Operating System
+  - RHCOS Operating System● Edit
+● Create
+● Describe
+Finding IP Address of a Pod
     - is an Container Orchestration Platform optimized minimal and secured Operating System
       based on RHEL
     - this OS comes with CRI-O & Podman pre-installed
@@ -283,6 +286,10 @@ oc describe rs/nginx-dbfb56c96
 
 # Finding more details about the pod
 oc describe pod/nginx-dbfb56c96-l296j
+
+# Editing a deployment and update its replicas from 3 to 5, save and exit
+oc edit deploy/nginx
+oc get pods
 ```
 
 
