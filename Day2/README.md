@@ -307,3 +307,18 @@ oc scale deploy/nginx --replicas=5
 # Scale down
 oc scale deploy/nginx --replicas=3
 ```
+
+## Lab - Port forward for quick testing/debugging
+```
+oc project jegan-project
+oc get pods
+# Terminal 1
+oc port-forward pod/hello-7cf46f6476-fwzrn 9090:8080
+
+# Terminal 2
+curl http://localhost:9090
+
+# To stop the port forward after your testing
+# Press Ctrl+C in Terminal 1
+# From Terminal 2, curl will no more work
+```
