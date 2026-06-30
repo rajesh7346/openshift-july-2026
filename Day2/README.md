@@ -210,3 +210,9 @@ oc describe node/master01.ocp4.palmeto.org
 oc describe node/worker01.ocp4.palmeto.org
 ```
 
+## Lab - List and find all control plane pods
+```
+oc get pods --all-namespaces -o wide | grep api
+oc get pods --all-namespaces -o wide | grep scheduler
+```
+
