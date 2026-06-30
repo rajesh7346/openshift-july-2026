@@ -308,7 +308,7 @@ oc scale deploy/nginx --replicas=5
 oc scale deploy/nginx --replicas=3
 ```
 
-## Lab - Port forward for quick testing/debugging
+## Lab - Port forward for quick testing/debugging (Not for production environment)
 ```
 oc project jegan-project
 oc get pods
