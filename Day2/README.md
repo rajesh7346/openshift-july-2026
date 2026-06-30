@@ -250,3 +250,28 @@ Deleting a project( please delete only your project )
 ```
 oc delete project jegan
 ```
+
+## Lab - Deploying your first application into Openshift using imperative approach
+```
+oc new-project jegan-project
+oc create deploy nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/bitnami-nginx:1.26 --replicas=3
+
+# Listing deployments
+oc get deployments
+oc get deployment
+oc get deploy
+
+# Listing replicasets
+oc get replicasets
+oc get replicaset
+oc get rs
+
+# Listing pods
+oc get pods
+oc get pod
+oc get po
+
+# Listing mutliple resource with a single command
+oc get deploy,rs,po
+oc get all
+```
