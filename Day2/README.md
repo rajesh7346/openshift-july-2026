@@ -274,4 +274,15 @@ oc get po
 # Listing mutliple resource with a single command
 oc get deploy,rs,po
 oc get all
+
+# Finding more details about your deployment
+oc describe deploy/nginx
+
+# Finding more details about replicaset
+oc describe rs/nginx-dbfb56c96
+
+# Finding more details about the pod
+oc describe pod/nginx-dbfb56c96-l296j
 ```
+
+
