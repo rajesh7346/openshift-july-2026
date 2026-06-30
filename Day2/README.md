@@ -114,6 +114,7 @@ cat ~/openshift.txt
 oc login --username=kubeadmin --password=VVnz6-ezZ9W-RVbw4-NPK3R https://api.ocp4.palmeto.org:6443 --insecure-skip-tls-verify
 ```
 
+
 ## Lab - Listing Nodes in Red Hat Openshift
 ```
 oc version
