@@ -444,3 +444,62 @@ docker logs nginx2-jegan
 docker logs nginx3-jegan
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b5672d4f-5e9f-4c4f-ac7a-10722d825f0e" />
+
+## Lab - Create a mysql db container
+```
+docker run -d --name mysql-jegan --hostname mysql-jegan -e MYSQL_ROOT_PASSWORD=root@123 mysql:latest
+docker ps
+docker logs mysql-jegan
+```
+<img width="480" height="300" alt="image" src="https://github.com/user-attachments/assets/161facde-21ce-4db6-ae36-fde90db3e544" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/116516e8-861a-4ded-aa22-33b61256785c" />
+
+Let's get inside the mysql db server container
+```
+docker exec -it mysql-jegan /bin/sh
+mysql -u root -p
+SHOW DATABASES;
+CREATE DATABASE tektutor;
+USE tektutor;
+CREATE TABLE trainings ( id INT NOT NULL, name VARCHAR(200) NOT NULL, duration VARCHAR(200) NOT NULL, PRIMARY KEY(id) );
+INSERT INTO trainings VALUES ( 1, "DevOps", "5 Days" );
+INSERT INTO trainings VALUES ( 2, "Microservices with Golang", "5 Days" );
+SELECT * FROM trainings;
+exit
+exit
+docker ps
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0a808d93-1cf5-40fd-8140-725cb260cd56" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2d00e8eb-44db-4eca-8281-08180873c13d" />
+
+
+Let's try to restart the mysql container
+```
+docker restart mysql-jegan
+docker ps
+docker exec -it mysql-jegan /bin/sh
+mysql -u root
+SHOW DATABASES;
+USE tektutor;
+SHOW TABLES;
+SELECT * FROM trainings;
+exit
+exit
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ea152d94-c768-4469-bc01-1a0528368d95" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/dc616e44-6c97-4bbc-86fb-418db585f882" />
+
+
+Let's delete the mysql container. At this point, we not only lost the container, we also lost the data stored inside the container.
+```
+docker rm -f mysql-jegan
+```
+
+Hence, we must always store application data in an external storage.
+
+```
+mkidr -p /tmp/jegan/mysql
+docker run -d --name mysql-jegan --hostname mysql-jegan -e MYSQL_ROOT_PASSWORD=root@123 -v /tmp/jegan/mysql:/var/lib/mysql mysql:latest
+docker exec -it mysql-jegan /bin/sh
+
+```
