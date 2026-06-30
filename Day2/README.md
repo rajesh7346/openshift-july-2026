@@ -126,3 +126,9 @@ kubectl get nodes
 oc get nodes -o wide
 kubectl get nodes -o wide
 ```
+
+## Lab - Finding additional meta-data about a node
+```
+oc describe node/master01.ocp4.palmeto.org
+oc describe node/worker01.ocp4.palmeto.org
+```
