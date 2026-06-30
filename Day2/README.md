@@ -216,3 +216,37 @@ oc get pods --all-namespaces -o wide | grep api
 oc get pods --all-namespaces -o wide | grep scheduler
 ```
 
+## Lab - Managing projects in Openshift
+<pre>
+- each team in an organization setup, will create atleast 1 project to isolate their application
+  deployment from the other teams in the same organization
+- generally, a single Openshift cluster will shared by all the team in an orgnanization
+- openshift, supports features to restrict access to only those team members working a project
+</pre>
+
+Create a new-project
+```
+oc new-project jegan
+```
+
+List all projects
+```
+oc get projects
+oc get project
+```
+
+Switching between projects
+```
+oc project default
+oc project jegan
+```
+
+Finding the currently active project
+```
+oc project
+```
+
+Deleting a project( please delete only your project )
+```
+oc delete project jegan
+```
