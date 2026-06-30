@@ -108,6 +108,29 @@
     - Ports 0-1024 are reserved for Openshift's internal use
 </pre>
 
+## Info - Pod
+<pre>
+- Pod is a logical grouping of related containers
+- Unlike Docker container where each container get a dedicated IP address, in case of Pod, all containers
+  that are part of a Pod they all share the same IP address
+- applications runs with a Pod container
+</pre>
+
+## Info - Types of applications that can be deployed into Openshift
+<pre>
+- Stateless applications
+  - k8s/Openshift supports a resource called Deployment
+- Stateful applications
+  - k8s/Openshift supports a resource called StatefulSet
+- Application that performs a one-time activity and stops in some time
+  - Job
+- Application that must be invoked periodically on a particular day and time
+  - CronJob (this internally used Job)
+- Applications that run one instance per Node
+  - DaemonSet
+</pre>
+
+
 ## Lab - Login to openshift from command-line
 ```
 cat ~/openshift.txt
@@ -132,3 +155,4 @@ kubectl get nodes -o wide
 oc describe node/master01.ocp4.palmeto.org
 oc describe node/worker01.ocp4.palmeto.org
 ```
+
