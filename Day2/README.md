@@ -369,4 +369,9 @@ oc describe svc/nginx
 oc scale deploy/nginx --replicas=8
 
 oc describe svc/nginx
+oc get endpoints
+
+oc scale deploy/nginx --replicas=3
+oc describe svc/nginx
+oc get endpoints
 ```
