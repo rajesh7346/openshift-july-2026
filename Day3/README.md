@@ -12,6 +12,7 @@ https://catalog.redhat.com/en/search?searchType=Containers
 
 ## Info - What happens internally in Openshift when we deploy an application
 ```
+oc project jegan-project
 oc create deploy nginx --image=docker.io/bitnami/nginx:1.26 --replicas=3
 ```
 
