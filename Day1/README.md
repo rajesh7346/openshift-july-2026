@@ -1,3 +1,4 @@
+# Day 1
 
 ## Info - Hypervisor Overview
 <pre>
@@ -65,9 +66,10 @@
 </pre>
 
 ## Info - Hypervisor High-Level Architecture
+![hypervisor](HypervisorHighLevelArchitecture.png)
 
 ## Info - Docker High-Level Architecture
-
+![docker](DockerHighLevelArchitecture.png)
 
 ## Info - Docker image
 <pre>
@@ -78,6 +80,7 @@
 - docker images are conservatively built, which means it only contains bare minimum tools required to run a specific appliction
 - every docker images gets a unique name and unique id ( 256-bit HASH )
 </pre>
+![docker](DockerLayers.png)
 
 ## Info - Docker Container
 <pre>
@@ -270,3 +273,260 @@ docker rename zealous_montalcini c2-jegan
 docker ps
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/376e7c47-8709-4ca7-a1a8-697cce371b0e" />
+
+## Lab - Finding details about a container image
+```
+docker image inspect ubuntu:26.04
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b4757865-3844-4dbc-a279-662ac54ff169" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e98ec6f7-8c49-43df-b99a-ce4c90c3fbdb" />
+
+## Lab - Finding details about a container
+```
+docker container inspect c1-jegan
+docker inspect c1-jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a892c119-4f3d-4640-a0c8-d6311b37378e" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/1abe5b7a-45f8-4c5b-a288-434ad8d65f78" />
+
+
+## Lab - Finding IP address of a container
+```
+docker inspect c1-jegan | grep IPA
+docker inspect -f {{.NetworkSettings.IPAddress}} c1-jegan
+docker exec -it c1-jegan hostname -i
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9bb4c003-09fa-462c-991f-f8a646ede2fd" />
+
+
+## Lab - Setup a Load balancer using containers
+![lb](PortForwarding.png)
+
+Let's create 3 web server containers using ngnix:latest image from Docker Hub website
+```
+docker run -d --name nginx1-jegan --hostname nginx1-jegan nginx:latest
+docker run -d --name nginx2-jegan --hostname nginx2-jegan nginx:latest
+docker run -d --name nginx3-jegan --hostname nginx3-jegan nginx:latest
+```
+
+List all running containers
+```
+docker ps
+```
+
+Find the IP addresses of the 3 webserver containers
+```
+docker inspect nginx1-jegan | grep IPA
+docker inspect nginx2-jegan | grep IPA
+docker inspect nginx3-jegan | grep IPA
+```
+
+See if you are able to access the web pages from those web server containers
+```
+curl http://172.17.0.2:80
+curl http://172.17.0.3:80
+curl http://172.17.0.4:80
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d77fe7f3-7988-47c4-90f1-722f7c5e83de" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/cbed13a0-4a3d-4b96-9d50-4b48511211c9" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/87efbbca-a7da-4abe-88f9-c5a43458779c" />
+
+Now, let's create the load balancer container with port-forward( to make it accessible outside the system where the lb container is running)
+```
+docker run -d --name lb-jegan --hostname lb-jegan -p 8080:80 nginx:latest
+```
+In case you wish docker to identify an available port on your lab machine and forward to that port
+```
+docker rm -f lb-jegan
+docker run -d --name lb-jegan --hostname lb-jegan -P  nginx:latest
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d711f979-b7b6-4c26-9bd8-ddb56485fb44" />
+
+
+We need to copy the nginx.conf file from the lb-jegan container to configure it work like a load balancer
+```
+docker cp lb-jegan:/etc/nginx/nginx.conf .
+cat nginx.conf
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/67db13f7-5bf3-490d-ad7a-f3144c929fc9" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/985c6a4b-baa3-479c-840e-b34e031c1a02" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f7158615-baca-4f5c-84ee-ebb3cb4efe39" />
+
+You need find the IP addresses of your nginx web server containers and update the nginx.conf file as shown below
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9a1de32a-3915-4750-aa49-4d85cccba04a" />
+
+You need to update the nginx.conf file with your web server IPs
+```
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /run/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    upstream myapp1 {
+        server 172.17.0.2:80;
+        server 172.17.0.3:80;
+        server 172.17.0.4:80;
+    }
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://myapp1;
+        }
+    }
+}
+
+```
+
+We need to copy this updated nginx.conf file from our local machine to the lb-jegan container
+```
+docker cp nginx.conf lb-jegan:/etc/nginx/nginx.conf
+```
+
+We need to restart the lb-jegan container to apply the config changes
+```
+docker restart lb-jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/432a7fda-4a3e-46ce-aa2b-7deeb7177fa4" />
+
+Make sure the lb-jegan container is running after our config changes
+```
+docker ps
+```
+
+Let's customize the web page in nginx1-jegan, nginx2-jegan and nginx3-jegan web server containers
+```
+echo "<h1>Web Server 1</h1>" > index.html
+docker cp index.html nginx1-jegan:/usr/share/nginx/html/index.html
+
+echo "<h1>Web Server 2</h1>" > index.html
+docker cp index.html nginx2-jegan:/usr/share/nginx/html/index.html
+
+echo "<h1>Web Server 3</h1>" > index.html
+docker cp index.html nginx3-jegan:/usr/share/nginx/html/index.html
+
+curl http://172.17.0.2:80
+curl http://172.17.0.3:80
+curl http://172.17.0.4:80
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4e1bbad6-a03d-4a83-a473-83a17a4e3d1a" />
+
+
+Let's verify if the lb-jegan container is working as configured( as a load balancer ) from firefox web browser on your lab machine
+```
+http://localhost:8080
+http://localhost:8080
+http://localhost:8080
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ba30e297-584c-4c53-9d48-5365bc67871e" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/139d4de4-4dae-4d8e-b3d1-00916d679a69" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ebc44367-2905-4d4a-bc89-3303a80fc9e3" />
+
+Checking the load balancer logs
+```
+docker logs lb-jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/cd6c29ae-4ce5-42dd-bb82-dd338720309b" />
+
+Checking the webserver logs
+```
+docker logs nginx1-jegan
+docker logs nginx2-jegan
+docker logs nginx3-jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b5672d4f-5e9f-4c4f-ac7a-10722d825f0e" />
+
+## Lab - Create a mysql db container
+```
+docker run -d --name mysql-jegan --hostname mysql-jegan -e MYSQL_ROOT_PASSWORD=root@123 mysql:latest
+docker ps
+docker logs mysql-jegan
+```
+<img width="480" height="300" alt="image" src="https://github.com/user-attachments/assets/161facde-21ce-4db6-ae36-fde90db3e544" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/116516e8-861a-4ded-aa22-33b61256785c" />
+
+Let's get inside the mysql db server container
+```
+docker exec -it mysql-jegan /bin/sh
+mysql -u root -p
+SHOW DATABASES;
+CREATE DATABASE tektutor;
+USE tektutor;
+CREATE TABLE trainings ( id INT NOT NULL, name VARCHAR(200) NOT NULL, duration VARCHAR(200) NOT NULL, PRIMARY KEY(id) );
+INSERT INTO trainings VALUES ( 1, "DevOps", "5 Days" );
+INSERT INTO trainings VALUES ( 2, "Microservices with Golang", "5 Days" );
+SELECT * FROM trainings;
+exit
+exit
+docker ps
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0a808d93-1cf5-40fd-8140-725cb260cd56" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2d00e8eb-44db-4eca-8281-08180873c13d" />
+
+
+Let's try to restart the mysql container
+```
+docker restart mysql-jegan
+docker ps
+docker exec -it mysql-jegan /bin/sh
+mysql -u root
+SHOW DATABASES;
+USE tektutor;
+SHOW TABLES;
+SELECT * FROM trainings;
+exit
+exit
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ea152d94-c768-4469-bc01-1a0528368d95" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/dc616e44-6c97-4bbc-86fb-418db585f882" />
+
+
+Let's delete the mysql container. At this point, we not only lost the container, we also lost the data stored inside the container.
+```
+docker rm -f mysql-jegan
+```
+
+Hence, we must always store application data in an external storage.
+
+```
+mkdir -p /tmp/jegan/mysql
+docker run -d --name mysql-jegan --hostname mysql-jegan -e MYSQL_ROOT_PASSWORD=root@123 -v /tmp/jegan/mysql:/var/lib/mysql mysql:latest
+docker exec -it mysql-jegan /bin/sh
+mysql -u root -p
+SHOW DATABASES;
+CREATE DATABASE tektutor;
+USE tektutor;
+CREATE TABLE trainings ( id INT NOT NULL, name VARCHAR(200) NOT NULL, duration VARCHAR(200) NOT NULL, PRIMARY KEY(id) );
+INSERT INTO trainings VALUES ( 1, "DevOps", "5 Days" );
+INSERT INTO trainings VALUES ( 2, "Microservices with Golang", "5 Days" );
+SELECT * FROM trainings;
+exit
+exit
+docker ps
+```
+
+Let's delete the mysql-jegan container and recreate a new one
+```
+docker rm mysql-jegan
+docker run -d --name mysql-jegan --hostname mysql-jegan -e MYSQL_ROOT_PASSWORD=root@123 -v /tmp/jegan/mysql:/var/lib/mysql mysql:latest
+docker exec -it mysql-jegan /bin/sh
+mysql -u root -p
+SHOW DATABASES;
+USE tektutor;
+SHOW TABLES;
+SELECT * FROM trainings;
+exit
+exit
+```
+
+Though we delete the container and recreated a new one, we didn't lose the data because we stored the database in an external disk.
+This is how, containers are used in real-world applications.
