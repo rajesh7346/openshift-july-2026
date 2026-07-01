@@ -362,5 +362,11 @@ oc get services
 oc get service
 oc get svc
 
+oc get endpoints
+
+oc describe svc/nginx
+
+oc scale deploy/nginx --replicas=8
+
 oc describe svc/nginx
 ```
